@@ -17,27 +17,75 @@ body {
 }
 
 .gateway h1 {
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+  color: #1a1a1a;
+}
+
+.gateway > p {
+  color: #555;
+  font-size: 1.05rem;
+  margin-top: 0;
 }
 
 .gateway__cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
 .gateway__card {
+  position: relative;
   text-align: left;
-  border: 1px solid #ccc;
+  border: 2px solid #ddd;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.75rem 1.5rem;
   background: white;
   cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.gateway__card:hover {
+.gateway__card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: #1f5d33;
+}
+
+.gateway__card p {
+  margin: 0;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.gateway__card:not(:disabled):hover {
   border-color: #1f5d33;
+  box-shadow: 0 4px 12px rgba(31, 93, 51, 0.12);
+}
+
+.gateway__card--disabled {
+  cursor: not-allowed;
+  background: #f9f9f9;
+  border-color: #e0e0e0;
+  opacity: 0.7;
+}
+
+.gateway__card--disabled h2 {
+  color: #888;
+}
+
+.gateway__badge {
+  display: inline-block;
+  margin-top: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  background: #e8e8e8;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 /* Header */
@@ -141,6 +189,105 @@ body {
 .student-form,
 .ticket-form {
   margin-top: 2rem;
+}
+
+/* Form sections */
+.form-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f5d33;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-hint {
+  color: #666;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin: -0.25rem 0 1rem;
+}
+
+/* Field wrap: contains a select + the conditional alert badge */
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.field-wrap select {
+  width: 100%;
+  max-width: 320px;
+}
+
+.field-alert {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #fff8e1;
+  color: #7a5c00;
+  border: 1px solid #f0c040;
+  border-radius: 4px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  animation: alertFadeIn 0.2s ease;
+}
+
+@keyframes alertFadeIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Toggle buttons (Add external contact, Add entry) */
+.form-toggle-btn {
+  background: none;
+  border: 1px solid #1f5d33;
+  color: #1f5d33;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-toggle-btn:hover {
+  background: #f0f7f2;
+}
+
+/* Running log header (label + button on same line) */
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.log-header label {
+  margin-bottom: 0;
+}
+
+/* Email sent checkbox row */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+  color: #555;
+  cursor: default;
 }
 
 .form-row {

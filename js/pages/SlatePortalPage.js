@@ -4,12 +4,12 @@ import { FindStudentView } from "./slate/FindStudentView.js";
 import { TicketingDashboardView } from "./slate/TicketingDashboardView.js";
 import { TicketingFormView } from "./slate/TicketingFormView.js";
 
-function renderSlateView(view) {
-    switch (view) {
+function renderSlateView(state) {
+    switch (state.currentSlateView) {
         case "ticketing-dashboard":
             return TicketingDashboardView();
         case "ticketing-form":
-            return TicketingFormView();
+            return TicketingFormView(state);
         case "find-student":
         default:
             return FindStudentView();
@@ -24,7 +24,7 @@ export function SlatePortalPage(state) {
       ${Sidebar(state)}
 
       <section class="portal-main">
-        ${renderSlateView(state.currentSlateView)}
+        ${renderSlateView(state)}
       </section>
     </main>
   `;

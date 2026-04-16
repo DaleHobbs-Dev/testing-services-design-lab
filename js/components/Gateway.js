@@ -10,9 +10,10 @@ export function Gateway() {
           <p>Prototype portal layouts, navigation, forms, and interaction patterns.</p>
         </button>
 
-        <button class="gateway__card" data-nav="website">
+        <button class="gateway__card gateway__card--disabled" disabled>
           <h2>Website Designs</h2>
           <p>Prototype ideas for the main institutional website.</p>
+          <span class="gateway__badge">Coming Soon</span>
         </button>
       </div>
     </section>

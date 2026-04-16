@@ -1,0 +1,84 @@
+{
+  "locations": [
+    { "id": 1, "name": "Columbia" },
+    { "id": 2, "name": "Lawrenceburg" },
+    { "id": 3, "name": "Lewisburg" },
+    { "id": 4, "name": "Williamson" },
+    { "id": 5, "name": "Off-Site" }
+  ],
+
+  "employees": [
+    { "id": 1, "name": "Michelle" },
+    { "id": 2, "name": "Josh" },
+    { "id": 3, "name": "Eric" },
+    { "id": 4, "name": "Isaiah" }
+  ],
+
+  "irregularities": [
+    { "id": 1, "code": "IRR0001", "type": "Unauthorized Materials", "label": "IRR0001 – Unauthorized Materials" },
+    { "id": 2, "code": "IRR0002", "type": "Examinee Misconduct", "label": "IRR0002 – Examinee Misconduct" },
+    { "id": 3, "code": "IRR0003", "type": "Technical Failure", "label": "IRR0003 – Technical Failure" },
+    { "id": 4, "code": "IRR0004", "type": "Environmental Disruption", "label": "IRR0004 – Environmental Disruption" },
+    { "id": 5, "code": "IRR0005", "type": "Policy Violation", "label": "IRR0005 – Policy Violation" }
+  ],
+
+  "ticket_types": [
+    { "id": 1, "label": "Faculty Request" },
+    { "id": 2, "label": "Student Issue" },
+    { "id": 3, "label": "Accessibility / Accommodations" },
+    { "id": 4, "label": "Vendor Test Coordination" },
+    { "id": 5, "label": "Internal Follow-Up" },
+    { "id": 6, "label": "Exam Delivery / Return" },
+    { "id": 7, "label": "System Error / Incident" },
+    { "id": 8, "label": "Other", "has_conditional_text": true }
+  ],
+
+  "statuses": [
+    { "id": 1, "label": "Open" },
+    { "id": 2, "label": "Pending" },
+    { "id": 3, "label": "Closed" },
+    { "id": 4, "label": "On Hold" }
+  ],
+
+  "priorities": [
+    { "id": 1, "label": "Low" },
+    { "id": 2, "label": "Normal" },
+    { "id": 3, "label": "High" },
+    { "id": 4, "label": "Urgent" }
+  ],
+
+  "origin_sources": [
+    { "id": 1, "label": "Submitted by form" },
+    { "id": 2, "label": "Created from email" },
+    { "id": 3, "label": "Created from Irregularity" },
+    { "id": 4, "label": "Created from Incident" },
+    { "id": 5, "label": "Created by employee" },
+    { "id": 6, "label": "Imported from external system" }
+  ],
+
+  "initial_comm_types": [
+    { "id": 1, "label": "Email (pasted-in or auto-captured)" },
+    { "id": 2, "label": "Phone call" },
+    { "id": 3, "label": "Walk-in" },
+    { "id": 4, "label": "Form submission" },
+    { "id": 5, "label": "Vendor portal communication" },
+    { "id": 6, "label": "Other" }
+  ],
+
+  "test_types": [
+    { "id": 1, "label": "Accuplacer" },
+    { "id": 2, "label": "HiSET" },
+    { "id": 3, "label": "Pearson" },
+    { "id": 4, "label": "CLEP" },
+    { "id": 5, "label": "Faculty Test" },
+    { "id": 6, "label": "TN eCampus" },
+    { "id": 7, "label": "Outside Institution" }
+  ],
+
+  "test_mediums": [
+    { "id": 1, "label": "Paper exam" },
+    { "id": 2, "label": "Online exam" }
+  ],
+
+  "email_templates": []
+}

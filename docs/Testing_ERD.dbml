@@ -1,0 +1,110 @@
+//////////////////////////////////////////////////////////
+// Core Ticketing Database for Testing Services (Relational)
+//////////////////////////////////////////////////////////
+
+Table Tickets {
+  id                  int [pk, increment]
+  created_at          datetime
+  updated_at          datetime
+  closed_at           datetime
+
+  // Foreign Keys
+  opened_by_staff_id  int [ref: > Testing_Employees.id]         // Staff who created the ticket
+  irregularity_id     int [ref: > Irregularities.id, null]      // Optional
+  location_id         int [ref: > Locations.id, null]           // Campus / test center location
+  testing_event_id    int [ref: > Testing_Events.id, null]      // Optional link to testing event
+  examinee_id         varchar(20)                               // Student / examinee ID (not a FK for now)
+
+  // Ticket metadata
+  ticket_type         varchar(50)
+  status              varchar(20)                               // Open / Closed / Pending, etc.
+  priority            varchar(20)                               // Low / Normal / High / Urgent
+  origin_source       varchar(50)                               // Email, phone, form submission, etc.
+
+  // External parties (faculty, vendor, advisor, etc.)
+  faculty_name        varchar(100)
+  faculty_email       varchar(150)
+  external_contact_name  varchar(100)
+  external_contact_email varchar(150)
+
+  // Communication Tracking
+  initial_comm_type   varchar(50)                                // Email, phone, walk-in, etc.
+  original_message    text
+  requires_email      boolean
+  email_template      varchar(100)
+  email_subject       varchar(200)
+  email_body          text
+  email_recipients    text                                       // Could break out eventually into separate table
+
+  // Exam / Testing-specific fields
+  exam_type           varchar(50)
+  exam_due_date       date
+  exam_returned       boolean
+  exam_returned_at    datetime
+
+  // Internal workflow fields
+  log_notes           text                                        // Append-only note field
+  resolution_summary  text
+}
+
+//////////////////////////////////////////////////////////
+// Many-to-Many: Tickets <-> Testing_Employees
+//////////////////////////////////////////////////////////
+
+Table Ticket_Assignees {
+  id                  int [pk, increment]
+  ticket_id           int [ref: > Tickets.id]
+  staff_id            int [ref: > Testing_Employees.id]
+  assigned_at         datetime
+  removed_at          datetime [null]                            // For historical accuracy
+}
+
+//////////////////////////////////////////////////////////
+// Supporting Relational Tables (minimal for now)
+//////////////////////////////////////////////////////////
+
+Table Testing_Employees {
+  id        int [pk, increment]
+  first_name varchar(100)
+  last_name  varchar(100)
+  email      varchar(150)
+  role       varchar(50)                                         // Optional: coordinator, director, staff, student worker
+  active     boolean                                             // In case staff leave but historical tickets remain
+}
+
+Table Irregularities {
+  id int [pk, increment]
+  // Additional fields will be added later
+}
+
+Table Locations {
+  id int [pk, increment]
+  name varchar(100)
+  // Additional fields will be added later
+}
+
+Table Testing_Events {
+  id int [pk, increment]
+  // Additional fields added later (exam, course, faculty, date range)
+}
+
+//////////////////////////////////////////////////////////
+// Potential Expansion Tables 
+//////////////////////////////////////////////////////////
+
+Table Communication_Log {
+  id int [pk, increment]
+  ticket_id int [ref: > Tickets.id]
+  staff_id int [ref: > Testing_Employees.id, null]
+  comm_type varchar(50)               // Email, phone call, note, etc.
+  message text
+  created_at datetime
+}
+
+Table Attachments {
+  id int [pk, increment]
+  ticket_id int [ref: > Tickets.id]
+  file_path varchar(200)
+  file_type varchar(50)
+  uploaded_at datetime
+}
