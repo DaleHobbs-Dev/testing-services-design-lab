@@ -8,10 +8,12 @@
   ],
 
   "employees": [
-    { "id": 1, "name": "Michelle" },
-    { "id": 2, "name": "Josh" },
-    { "id": 3, "name": "Eric" },
-    { "id": 4, "name": "Isaiah" }
+    { "id": 1, "name": "Michelle", "is_admin": true, "is_tech": false },
+    { "id": 2, "name": "Josh", "is_admin": false, "is_tech": false },
+    { "id": 3, "name": "Eric", "is_admin": true, "is_tech": false },
+    { "id": 4, "name": "Isaiah", "is_admin": false, "is_tech": false },
+    { "id": 5, "name": "Dale", "is_admin": true, "is_tech": true },
+    { "id": 6, "name": "Javon", "is_admin": true, "is_tech": true }
   ],
 
   "irregularities": [

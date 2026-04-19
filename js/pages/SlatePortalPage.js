@@ -18,7 +18,7 @@ function renderSlateView(state) {
 
 export function SlatePortalPage(state) {
     return `
-    ${Header()}
+    ${Header(state)}
 
     <main class="portal-layout">
       ${Sidebar(state)}

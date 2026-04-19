@@ -34,6 +34,29 @@ function attachEvents() {
         });
     });
 
+    // --- Profile selection ---
+    document.querySelectorAll("[data-profile]").forEach(card => {
+        card.addEventListener("click", e => {
+            const userId = parseInt(e.currentTarget.dataset.profile);
+            const user = (state.db?.employees || []).find(emp => emp.id === userId);
+            if (user) {
+                state.currentSlateUser = user;
+                localStorage.setItem("slateUser", JSON.stringify(user));
+                render();
+            }
+        });
+    });
+
+    // --- Change user (clears localStorage and returns to profile selection) ---
+    const changeUserBtn = document.querySelector("[data-action='change-user']");
+    if (changeUserBtn) {
+        changeUserBtn.addEventListener("click", () => {
+            state.currentSlateUser = null;
+            localStorage.removeItem("slateUser");
+            render();
+        });
+    }
+
     // --- Form conditionals (direct DOM manipulation, no re-render) ---
     attachFormEvents();
 }
@@ -170,6 +193,16 @@ async function loadData() {
 
 async function init() {
     await loadData();
+
+    const savedUser = localStorage.getItem("slateUser");
+    if (savedUser) {
+        try {
+            state.currentSlateUser = JSON.parse(savedUser);
+        } catch {
+            localStorage.removeItem("slateUser");
+        }
+    }
+
     render();
 }
 
