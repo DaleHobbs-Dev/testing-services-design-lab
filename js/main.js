@@ -82,63 +82,106 @@ function hideFieldAlert(selectId) {
     alert.style.display = "none";
 }
 
+function showFormToast() {
+    const toast = document.querySelector(".form-toast");
+    if (!toast) return;
+    toast.style.display = "block";
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => {
+        toast.style.display = "none";
+    }, 4000);
+}
+
+function updateOptionalDetailsVisibility() {
+    const optionalDetails = document.querySelector("#optionalDetails");
+    if (!optionalDetails) return;
+    const anyVisible = Array.from(
+        document.querySelectorAll("[data-optional-section]")
+    ).some(el => el.style.display === "block");
+    optionalDetails.style.display = anyVisible ? "block" : "none";
+}
+
+function activateSection(sectionKey) {
+    // Check the corresponding toggle if one exists
+    const toggle = document.querySelector(`.toggle-checkbox[data-section="${sectionKey}"]`);
+    if (toggle) toggle.checked = true;
+
+    // Show the target element
+    if (sectionKey === "email") {
+        const el = document.querySelector(".email-workflow-wrapper");
+        if (el) el.style.display = "block";
+    } else if (sectionKey === "internal") {
+        const el = document.querySelector(".internal-notes-wrapper");
+        if (el) el.style.display = "block";
+    } else {
+        const el = document.querySelector(`[data-optional-section="${sectionKey}"]`);
+        if (el) el.style.display = "block";
+    }
+
+    updateOptionalDetailsVisibility();
+    showFormToast();
+}
+
+function handleTicketTypeChange(label) {
+    // Hide all ticket-type-driven prompts and the "Other" field
+    document.querySelectorAll(".ticket-type-prompt").forEach(p => {
+        p.style.display = "none";
+    });
+    const otherRow = document.querySelector(".ticket-type-other-row");
+    if (otherRow) otherRow.style.display = "none";
+
+    if (label === "Other") {
+        if (otherRow) otherRow.style.display = "grid";
+        showFieldAlert("ticketType");
+        return;
+    }
+
+    const prompt = document.querySelector(`.ticket-type-prompt[data-for-type="${label}"]`);
+    if (prompt) {
+        prompt.style.display = "flex";
+        showFieldAlert("ticketType");
+    }
+}
+
 function attachFormEvents() {
-    // Ticket type "Other" -> reveal description field
+    // --- Context toggle switches ---
+    document.querySelectorAll(".toggle-checkbox").forEach(cb => {
+        cb.addEventListener("change", () => {
+            const section = cb.dataset.section;
+
+            if (section === "email") {
+                const el = document.querySelector(".email-workflow-wrapper");
+                if (el) el.style.display = cb.checked ? "block" : "none";
+            } else if (section === "internal") {
+                const el = document.querySelector(".internal-notes-wrapper");
+                if (el) el.style.display = cb.checked ? "block" : "none";
+            } else {
+                const el = document.querySelector(`[data-optional-section="${section}"]`);
+                if (el) el.style.display = cb.checked ? "block" : "none";
+            }
+
+            updateOptionalDetailsVisibility();
+            if (cb.checked) showFormToast();
+        });
+    });
+
+    // --- Contextual prompt buttons (ticket-type-triggered) ---
+    document.querySelectorAll(".contextual-prompt-btn").forEach(btn => {
+        btn.addEventListener("click", e => {
+            activateSection(e.currentTarget.dataset.activateSection);
+        });
+    });
+
+    // --- Ticket type change ---
     const ticketTypeSelect = document.querySelector("#ticketType");
     if (ticketTypeSelect) {
         ticketTypeSelect.addEventListener("change", e => {
-            const otherRow = document.querySelector(".ticket-type-other-row");
-            if (otherRow) {
-                const label = e.target.options[e.target.selectedIndex].text;
-                const isOther = label === "Other";
-                otherRow.style.display = isOther ? "grid" : "none";
-                isOther ? showFieldAlert("ticketType") : hideFieldAlert("ticketType");
-            }
+            const label = e.target.options[e.target.selectedIndex].text;
+            handleTicketTypeChange(label);
         });
     }
 
-    // Status "On Hold" -> reveal reason for delay
-    const statusSelect = document.querySelector("#ticketStatus");
-    if (statusSelect) {
-        statusSelect.addEventListener("change", e => {
-            const delayRow = document.querySelector(".reason-delay-row");
-            if (delayRow) {
-                const label = e.target.options[e.target.selectedIndex].text;
-                const isOnHold = label === "On Hold";
-                delayRow.style.display = isOnHold ? "grid" : "none";
-                isOnHold ? showFieldAlert("ticketStatus") : hideFieldAlert("ticketStatus");
-            }
-        });
-    }
-
-    // Origin source "Created from Irregularity" -> reveal irregularity section
-    const originSelect = document.querySelector("#originSource");
-    if (originSelect) {
-        originSelect.addEventListener("change", e => {
-            const irregSection = document.querySelector(".irregularity-section");
-            if (irregSection) {
-                const label = e.target.options[e.target.selectedIndex].text;
-                const isIrreg = label.includes("Irregularity");
-                irregSection.style.display = isIrreg ? "block" : "none";
-                isIrreg ? showFieldAlert("originSource") : hideFieldAlert("originSource");
-            }
-        });
-    }
-
-    // Requires email -> reveal email workflow section
-    const requiresEmailSelect = document.querySelector("#requiresEmail");
-    if (requiresEmailSelect) {
-        requiresEmailSelect.addEventListener("change", e => {
-            const emailSection = document.querySelector(".email-workflow-section");
-            if (emailSection) {
-                const needsEmail = e.target.value === "yes";
-                emailSection.style.display = needsEmail ? "block" : "none";
-                needsEmail ? showFieldAlert("requiresEmail") : hideFieldAlert("requiresEmail");
-            }
-        });
-    }
-
-    // Exam returned "Yes" -> reveal date returned field
+    // --- Exam returned "Yes" -> reveal date field ---
     const examReturnedSelect = document.querySelector("#examReturned");
     if (examReturnedSelect) {
         examReturnedSelect.addEventListener("change", e => {
@@ -151,22 +194,7 @@ function attachFormEvents() {
         });
     }
 
-    // External contact toggle
-    const addContactBtn = document.querySelector("[data-action='add-external-contact']");
-    if (addContactBtn) {
-        addContactBtn.addEventListener("click", () => {
-            const fields = document.querySelector(".external-contact-fields");
-            if (fields) {
-                const isHidden = fields.style.display === "none" || fields.style.display === "";
-                fields.style.display = isHidden ? "block" : "none";
-                addContactBtn.textContent = isHidden
-                    ? "- Remove external contact"
-                    : "+ Add external contact";
-            }
-        });
-    }
-
-    // Running log: append timestamped entry to bottom of textarea
+    // --- Running log: append timestamped entry ---
     const addLogBtn = document.querySelector("[data-action='add-log-entry']");
     if (addLogBtn) {
         addLogBtn.addEventListener("click", () => {

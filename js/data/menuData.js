@@ -17,7 +17,7 @@ export const slateMenu = [
             },
             {
                 id: "ticketing-form",
-                label: "Ticketing Form",
+                label: "Create Ticket",
                 view: "ticketing-form"
             }
         ]

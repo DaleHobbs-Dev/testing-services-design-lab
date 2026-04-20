@@ -306,6 +306,205 @@ body {
   margin-top: 2rem;
 }
 
+/* Form toast (section-reveal notification) */
+.form-toast {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 50;
+  background: #fff8e1;
+  color: #7a5c00;
+  border: 1px solid #f0c040;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  animation: alertFadeIn 0.2s ease;
+}
+
+/* Tooltip trigger (ⓘ icon next to label text) */
+.tooltip-trigger {
+  background: none;
+  border: none;
+  padding: 0 0 0 0.3rem;
+  cursor: help;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.tooltip-icon {
+  color: #1f5d33;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.tooltip-content {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: white;
+  padding: 0.55rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  font-style: normal;
+  width: 270px;
+  line-height: 1.45;
+  z-index: 200;
+  white-space: normal;
+  text-align: left;
+  pointer-events: none;
+}
+
+.tooltip-trigger:hover .tooltip-content,
+.tooltip-trigger:focus .tooltip-content {
+  display: block;
+}
+
+/* Italic label hints */
+.label-hint {
+  font-weight: normal;
+  color: #555;
+  font-size: 0.9em;
+}
+
+/* Full-width input override for brief summary */
+.input-full {
+  max-width: 100% !important;
+}
+
+/* Context toggles group */
+.context-toggles {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.context-toggles__label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #333;
+  margin: 0 0 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Toggle switch */
+.context-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.4rem 0;
+  user-select: none;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: #ccc;
+  border-radius: 11px;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: left 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-checkbox:checked + .toggle-track {
+  background: #1f5d33;
+}
+
+.toggle-checkbox:checked + .toggle-track::after {
+  left: 21px;
+}
+
+.toggle-label {
+  font-size: 0.95rem;
+  font-weight: normal;
+  color: #333;
+}
+
+.context-toggle:hover .toggle-label {
+  color: #1f5d33;
+}
+
+/* Ticket-type contextual prompt (appears below Ticket Type select) */
+.ticket-type-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  background: #f0f7f2;
+  border: 1px solid #b8ddc8;
+  border-radius: 6px;
+  padding: 0.5rem 0.85rem;
+  margin: 0.25rem 0 0.75rem 220px;
+  font-size: 0.875rem;
+  color: #2a5c3a;
+}
+
+.ticket-type-prompt__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.contextual-prompt-btn {
+  background: #1f5d33;
+  border: none;
+  color: white;
+  padding: 0.3rem 0.75rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.contextual-prompt-btn:hover {
+  background: #174d2a;
+}
+
+/* Optional Details subsection headers */
+.optional-subsection__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #444;
+  margin: 1.75rem 0 1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #e8e8e8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-optional-section]:first-child .optional-subsection__title {
+  margin-top: 0;
+}
+
 /* Form sections */
 .form-section {
   margin-bottom: 2.5rem;
