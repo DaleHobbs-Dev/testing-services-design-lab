@@ -1,0 +1,8 @@
+{
+  "name": "testing-services-design-lab",
+  "private": true,
+  "description": "The site itself is a dependency-free static prototype (plain HTML/CSS/JS). These devDependencies exist only to support automated headless-browser checks.",
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}

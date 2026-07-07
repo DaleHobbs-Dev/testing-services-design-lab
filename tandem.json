@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "config": {
+    "understandingChecks": true
+  },
+  "docs": [
+    {
+      "path": "docs/Testing_ERD.dbml",
+      "scope": "database",
+      "purpose": "Entity-relationship diagram for the core ticketing database (Tickets, Employees, Locations, Irregularities, Testing_Events, and related lookup tables) used to seed database.json",
+      "tags": ["architecture", "database", "erd"]
+    }
+  ]
+}

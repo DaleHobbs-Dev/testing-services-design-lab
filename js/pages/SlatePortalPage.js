@@ -3,6 +3,8 @@ import { Sidebar } from "../components/Sidebar.js";
 import { FindStudentView } from "./slate/FindStudentView.js";
 import { TicketingDashboardView } from "./slate/TicketingDashboardView.js";
 import { TicketingFormView } from "./slate/TicketingFormView.js";
+import { ViewCalendarView } from "./slate/calendar/ViewCalendarView.js";
+import { EditCalendarView } from "./slate/calendar/EditCalendarView.js";
 
 function renderSlateView(state) {
     switch (state.currentSlateView) {
@@ -10,6 +12,10 @@ function renderSlateView(state) {
             return TicketingDashboardView();
         case "ticketing-form":
             return TicketingFormView(state);
+        case "view-calendar":
+            return ViewCalendarView(state);
+        case "edit-calendar":
+            return EditCalendarView(state);
         case "find-student":
         default:
             return FindStudentView();

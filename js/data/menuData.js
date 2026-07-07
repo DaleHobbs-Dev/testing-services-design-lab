@@ -21,5 +21,23 @@ export const slateMenu = [
                 view: "ticketing-form"
             }
         ]
+    },
+    {
+        id: "calendar",
+        label: "Testing Calendar",
+        type: "accordion",
+        adminOnly: true,
+        children: [
+            {
+                id: "view-calendar",
+                label: "View Calendar",
+                view: "view-calendar"
+            },
+            {
+                id: "edit-calendar",
+                label: "Edit Calendar",
+                view: "edit-calendar"
+            }
+        ]
     }
 ];

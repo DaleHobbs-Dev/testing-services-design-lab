@@ -70,13 +70,13 @@
   ],
 
   "test_types": [
-    { "id": 1, "label": "Accuplacer" },
-    { "id": 2, "label": "HiSET" },
-    { "id": 3, "label": "Pearson" },
-    { "id": 4, "label": "CLEP" },
-    { "id": 5, "label": "Faculty Test" },
-    { "id": 6, "label": "TN eCampus" },
-    { "id": 7, "label": "Outside Institution" }
+    { "id": 1, "label": "Accuplacer", "color": "#2563eb" },
+    { "id": 2, "label": "HiSET", "color": "#16a34a" },
+    { "id": 3, "label": "Pearson", "color": "#d97706" },
+    { "id": 4, "label": "CLEP", "color": "#7c3aed" },
+    { "id": 5, "label": "Faculty Test", "color": "#0891b2" },
+    { "id": 6, "label": "TN eCampus", "color": "#dc2626" },
+    { "id": 7, "label": "Outside Institution", "color": "#6b7280" }
   ],
 
   "test_mediums": [
@@ -91,6 +91,28 @@
     { "id": 2, "label": "Spring 2026 – HiSET Cohort A" },
     { "id": 3, "label": "Spring 2026 – CLEP Exam Block" },
     { "id": 4, "label": "Spring 2026 – Pearson Testing Window" }
+  ],
+
+  "calendar_months": [
+    { "id": 1, "year": 2026, "month": 7, "label": "July 2026" }
+  ],
+
+  "employee_schedules": [
+    { "id": 1, "employee_id": 2, "date": "2026-07-06", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 2, "employee_id": 2, "date": "2026-07-07", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 3, "employee_id": 2, "date": "2026-07-08", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 4, "employee_id": 2, "date": "2026-07-09", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 5, "employee_id": 2, "date": "2026-07-10", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 6, "employee_id": 4, "date": "2026-07-06", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 7, "employee_id": 4, "date": "2026-07-07", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 8, "employee_id": 4, "date": "2026-07-08", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 9, "employee_id": 4, "date": "2026-07-09", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] },
+    { "id": 10, "employee_id": 4, "date": "2026-07-10", "blocks": [{ "start": "08:00", "end": "11:00" }, { "start": "12:00", "end": "16:00" }] }
+  ],
+
+  "calendar_exams": [
+    { "id": 1, "test_type_id": 1, "date": "2026-07-06", "start": "09:00", "end": "10:30" },
+    { "id": 2, "test_type_id": 1, "date": "2026-07-07", "start": "09:00", "end": "10:30" }
   ],
 
   "tickets": [

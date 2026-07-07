@@ -1,7 +1,15 @@
 import { state } from "./state.js";
 import { renderApp } from "./router.js";
+import { validateScheduleBlocks } from "./utils/calendarDates.js";
+import {
+    addMonth, addScheduleEntry, addExamEntry, deleteScheduleEntry, deleteExamEntry
+} from "./data/calendarStore.js";
 
 const app = document.querySelector("#app");
+
+window.addEventListener("afterprint", () => {
+    document.body.classList.remove("is-printing-calendar");
+});
 
 function render() {
     app.innerHTML = renderApp(state);
@@ -59,6 +67,10 @@ function attachEvents() {
 
     // --- Form conditionals (direct DOM manipulation, no re-render) ---
     attachFormEvents();
+
+    // --- Calendar ---
+    attachCalendarEvents();
+    attachCalendarEditConditionals();
 }
 
 function showFieldAlert(selectId) {
@@ -210,6 +222,211 @@ function attachFormEvents() {
                 textarea.focus();
                 textarea.setSelectionRange(textarea.value.length, textarea.value.length);
             }
+        });
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Calendar
+// ---------------------------------------------------------------------------
+
+function showCalendarError(id, message) {
+    const el = document.querySelector(`#${id}`);
+    if (!el) return;
+    el.textContent = message;
+    el.style.display = "inline-flex";
+}
+
+function clearCalendarError(id) {
+    const el = document.querySelector(`#${id}`);
+    if (!el) return;
+    el.style.display = "none";
+}
+
+function printCalendar() {
+    const source = document.querySelector("#calendarPrintTarget");
+    const printArea = document.querySelector("#calendarPrintArea");
+    if (!source || !printArea) return;
+
+    printArea.innerHTML = source.innerHTML;
+    document.body.classList.add("is-printing-calendar");
+    window.print();
+}
+
+function handleCreateMonth() {
+    const monthSelect = document.querySelector("#newMonthMonth");
+    const yearInput = document.querySelector("#newMonthYear");
+    if (!monthSelect || !yearInput) return;
+
+    const month = parseInt(monthSelect.value);
+    const year = parseInt(yearInput.value);
+    const label = `${monthSelect.options[monthSelect.selectedIndex].text} ${year}`;
+
+    const record = addMonth(state.db, year, month, label);
+    if (!record) {
+        showCalendarError("addMonthAlert", "That month has already been added.");
+        return;
+    }
+
+    state.calendar.edit.year = year;
+    state.calendar.edit.month = month;
+    state.calendar.edit.selectedDate = null;
+    state.calendar.edit.addingMonth = false;
+    render();
+}
+
+function handleAddExam() {
+    const testTypeSelect = document.querySelector("#newExamTestType");
+    const startInput = document.querySelector("#newExamStart");
+    const endInput = document.querySelector("#newExamEnd");
+    if (!testTypeSelect || !startInput || !endInput) return;
+
+    clearCalendarError("examFormError");
+
+    if (!startInput.value || !endInput.value || endInput.value <= startInput.value) {
+        showCalendarError("examFormError", "End time must be after start time.");
+        return;
+    }
+
+    addExamEntry(parseInt(testTypeSelect.value), state.calendar.edit.selectedDate, startInput.value, endInput.value);
+    render();
+}
+
+function handleAddSchedule() {
+    const employeeSelect = document.querySelector("#newScheduleEmployee");
+    const block1Start = document.querySelector("#newScheduleBlock1Start");
+    const block1End = document.querySelector("#newScheduleBlock1End");
+    const addBlock2 = document.querySelector("#newScheduleAddBlock2");
+    const block2Start = document.querySelector("#newScheduleBlock2Start");
+    const block2End = document.querySelector("#newScheduleBlock2End");
+    const copyToggle = document.querySelector("#newScheduleCopyToggle");
+    if (!employeeSelect || !block1Start || !block1End) return;
+
+    clearCalendarError("scheduleFormError");
+
+    const blocks = [{ start: block1Start.value, end: block1End.value }];
+    if (addBlock2?.checked) {
+        blocks.push({ start: block2Start.value, end: block2End.value });
+    }
+
+    const validation = validateScheduleBlocks(blocks);
+    if (!validation.valid) {
+        showCalendarError("scheduleFormError", validation.message);
+        return;
+    }
+
+    const employeeId = parseInt(employeeSelect.value);
+    const targetDates = new Set([state.calendar.edit.selectedDate]);
+
+    if (copyToggle?.checked) {
+        document.querySelectorAll(".copy-day-checkbox:checked").forEach(cb => {
+            targetDates.add(cb.value);
+        });
+    }
+
+    targetDates.forEach(date => addScheduleEntry(employeeId, date, blocks));
+    render();
+}
+
+function handleCalendarAction(btn) {
+    switch (btn.dataset.calAction) {
+        case "print":
+            printCalendar();
+            break;
+        case "show-add-month":
+            state.calendar.edit.addingMonth = true;
+            render();
+            break;
+        case "cancel-add-month":
+            state.calendar.edit.addingMonth = false;
+            render();
+            break;
+        case "create-month":
+            handleCreateMonth();
+            break;
+        case "add-exam":
+            handleAddExam();
+            break;
+        case "add-schedule":
+            handleAddSchedule();
+            break;
+        case "delete-exam":
+            deleteExamEntry(btn.dataset.id);
+            render();
+            break;
+        case "delete-schedule":
+            deleteScheduleEntry(btn.dataset.id);
+            render();
+            break;
+    }
+}
+
+function attachCalendarEvents() {
+    // --- View Calendar: filters ---
+    document.querySelectorAll("[data-cal-employee-filter]").forEach(btn => {
+        btn.addEventListener("click", e => {
+            state.calendar.view.employeeFilter = e.currentTarget.dataset.calEmployeeFilter;
+            render();
+        });
+    });
+
+    document.querySelectorAll("[data-cal-testtype-filter]").forEach(btn => {
+        btn.addEventListener("click", e => {
+            state.calendar.view.testTypeFilter = e.currentTarget.dataset.calTesttypeFilter;
+            render();
+        });
+    });
+
+    // --- View Calendar: month navigation ---
+    document.querySelectorAll("[data-cal-month-nav]").forEach(btn => {
+        btn.addEventListener("click", e => {
+            const [year, month] = e.currentTarget.dataset.calMonthNav.split("-").map(Number);
+            state.calendar.view.year = year;
+            state.calendar.view.month = month;
+            render();
+        });
+    });
+
+    // --- Edit Calendar: month selection ---
+    document.querySelectorAll("[data-cal-edit-month]").forEach(btn => {
+        btn.addEventListener("click", e => {
+            const [year, month] = e.currentTarget.dataset.calEditMonth.split("-").map(Number);
+            state.calendar.edit.year = year;
+            state.calendar.edit.month = month;
+            state.calendar.edit.selectedDate = null;
+            state.calendar.edit.addingMonth = false;
+            render();
+        });
+    });
+
+    // --- Edit Calendar: day selection ---
+    document.querySelectorAll("[data-cal-day]").forEach(btn => {
+        btn.addEventListener("click", e => {
+            state.calendar.edit.selectedDate = e.currentTarget.dataset.calDay;
+            render();
+        });
+    });
+
+    // --- Calendar actions (print, add month, add/delete exam or schedule) ---
+    document.querySelectorAll("[data-cal-action]").forEach(btn => {
+        btn.addEventListener("click", e => handleCalendarAction(e.currentTarget));
+    });
+}
+
+function attachCalendarEditConditionals() {
+    const addBlock2 = document.querySelector("#newScheduleAddBlock2");
+    if (addBlock2) {
+        addBlock2.addEventListener("change", () => {
+            const row = document.querySelector(".schedule-block2-row");
+            if (row) row.style.display = addBlock2.checked ? "grid" : "none";
+        });
+    }
+
+    const copyToggle = document.querySelector("#newScheduleCopyToggle");
+    if (copyToggle) {
+        copyToggle.addEventListener("change", () => {
+            const panel = document.querySelector(".schedule-copy-days");
+            if (panel) panel.style.display = copyToggle.checked ? "block" : "none";
         });
     }
 }

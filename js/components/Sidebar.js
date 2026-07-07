@@ -1,7 +1,10 @@
 import { slateMenu } from "../data/menuData.js";
 
 export function Sidebar(state) {
-    const menuHtml = slateMenu.map(item => {
+    const isAdmin = !!state.currentSlateUser?.is_admin;
+    const visibleMenu = slateMenu.filter(item => !item.adminOnly || isAdmin);
+
+    const menuHtml = visibleMenu.map(item => {
         if (item.type === "single") {
             const activeClass = state.currentSlateView === item.view ? "is-active" : "";
 
