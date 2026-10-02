@@ -1,10 +1,10 @@
 const OBJECTIVES_PER_TEST_TYPE = 4;
 
 export function TrainingFormView(state) {
-  const db = state.db || {};
-  const currentUser = state.currentSlateUser;
+    const db = state.db || {};
+    const currentUser = state.currentSlateUser;
 
-  return `
+    return `
     <section class="content-panel">
       <h2>Training Completion</h2>
       <p>Record the exam training an employee has completed. Select the employee and one or more exams, then mark each training objective as completed or not.</p>
@@ -14,7 +14,7 @@ export function TrainingFormView(state) {
         ${renderTrainingObjectives(db)}
 
         <div class="form-actions">
-          <button type="button" class="portal-button" disabled>Submit Training Record</button>
+          <button type="button" class="portal-button" disabled>Submit</button>
         </div>
 
         <p class="demo-note">Demo only — this static prototype does not submit data.</p>
@@ -28,20 +28,20 @@ export function TrainingFormView(state) {
 // ---------------------------------------------------------------------------
 
 function renderTrainingDetails(db, currentUser) {
-  const employeeOptions = (db.employees || [])
-    .map(e => `<option value="${e.id}" ${e.id === currentUser?.id ? "selected" : ""}>${e.name}</option>`)
-    .join("");
+    const employeeOptions = (db.employees || [])
+        .map(e => `<option value="${e.id}" ${e.id === currentUser?.id ? "selected" : ""}>${e.name}</option>`)
+        .join("");
 
-  const testTypeChips = (db.test_types || [])
-    .map(t => `
+    const testTypeChips = (db.test_types || [])
+        .map(t => `
       <label class="training-exam-chip" style="--chip-color: ${t.color};">
         <input type="checkbox" class="training-exam-checkbox" value="${t.id}" />
         <span>${t.label}</span>
       </label>
     `)
-    .join("");
+        .join("");
 
-  return `
+    return `
     <div class="form-section">
       <h3 class="form-section__title">Training Details</h3>
 
@@ -70,9 +70,9 @@ function renderTrainingDetails(db, currentUser) {
 // ---------------------------------------------------------------------------
 
 function renderTrainingObjectives(db) {
-  const groups = (db.test_types || []).map(renderObjectiveGroup).join("");
+    const groups = (db.test_types || []).map(renderObjectiveGroup).join("");
 
-  return `
+    return `
     <div class="form-section">
       <h3 class="form-section__title">Training Objectives</h3>
       <p class="form-hint training-objectives-empty">Select an exam above to see its training objectives.</p>
@@ -82,9 +82,9 @@ function renderTrainingObjectives(db) {
 }
 
 function renderObjectiveGroup(testType) {
-  const objectives = Array.from({ length: OBJECTIVES_PER_TEST_TYPE }, (_, i) => {
-    const name = `objective-${testType.id}-${i + 1}`;
-    return `
+    const objectives = Array.from({ length: OBJECTIVES_PER_TEST_TYPE }, (_, i) => {
+        const name = `objective-${testType.id}-${i + 1}`;
+        return `
       <div class="training-objective">
         <span class="training-objective__label">Completed ${testType.label} Training Module ${i + 1}</span>
         <div class="training-objective__choices">
@@ -99,9 +99,9 @@ function renderObjectiveGroup(testType) {
         </div>
       </div>
     `;
-  }).join("");
+    }).join("");
 
-  return `
+    return `
     <div class="training-objective-group" data-training-test-type="${testType.id}" style="display: none; --chip-color: ${testType.color};">
       <h4 class="training-objective-group__title">${testType.label}</h4>
       ${objectives}
