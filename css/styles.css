@@ -1080,6 +1080,85 @@ textarea {
   cursor: pointer;
 }
 
+/* Training form */
+.form-row--top {
+  align-items: start;
+}
+
+.training-exam-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.training-exam-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-left: 4px solid var(--chip-color);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.training-exam-chip input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--chip-color);
+}
+
+.training-exam-chip:has(input:checked) {
+  background: color-mix(in srgb, var(--chip-color) 10%, white);
+  border-color: var(--chip-color);
+}
+
+.training-objective-group {
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--chip-color);
+  padding-left: 1rem;
+}
+
+.training-objective-group__title {
+  margin: 0 0 0.75rem;
+  color: var(--chip-color);
+}
+
+.training-objective {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.training-objective:last-child {
+  border-bottom: none;
+}
+
+.training-objective__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.training-objective__choices {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.training-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.training-choice input {
+  width: auto;
+  margin: 0;
+}
+
 /* Print Calendar */
 #calendarPrintArea {
   display: none;

@@ -23,6 +23,18 @@ export const slateMenu = [
         ]
     },
     {
+        id: "training",
+        label: "Employee Training",
+        type: "accordion",
+        children: [
+            {
+                id: "training-form",
+                label: "Training Form",
+                view: "training-form"
+            }
+        ]
+    },
+    {
         id: "calendar",
         label: "Testing Calendar",
         type: "accordion",

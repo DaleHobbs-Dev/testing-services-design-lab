@@ -206,6 +206,18 @@ function attachFormEvents() {
         });
     }
 
+    // --- Training form: show objectives for each selected exam ---
+    document.querySelectorAll(".training-exam-checkbox").forEach(cb => {
+        cb.addEventListener("change", () => {
+            const group = document.querySelector(`[data-training-test-type="${cb.value}"]`);
+            if (group) group.style.display = cb.checked ? "block" : "none";
+
+            const anySelected = document.querySelector(".training-exam-checkbox:checked");
+            const emptyHint = document.querySelector(".training-objectives-empty");
+            if (emptyHint) emptyHint.style.display = anySelected ? "none" : "block";
+        });
+    });
+
     // --- Running log: append timestamped entry ---
     const addLogBtn = document.querySelector("[data-action='add-log-entry']");
     if (addLogBtn) {
